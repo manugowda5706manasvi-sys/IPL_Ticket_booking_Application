@@ -1,0 +1,421 @@
+
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+
+/* 1. CSS Variables */
+:root {
+    --primary: #000000;
+    --secondary: #171717;
+    --accent: #D4AF37;
+    --text: #FFFFFF;
+    --gold-light: #F5D76E;
+}
+
+
+/* 2. Global Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 150px;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--primary);
+    color: var(--text);
+}
+
+
+/* 3. Navigation Bar */
+header {
+    background-color: var(--primary);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 15px rgba(212, 175, 55, 0.15);
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 5%;
+}
+
+.logo h1 {
+    color: var(--accent);
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+nav ul li a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    color: var(--gold-light);
+}
+
+
+/* 4. Hero Section */
+.hero {
+    height: 450px;
+    margin-top: 125px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.55),
+        rgba(0, 0, 0, 0.8)
+    );
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+}
+
+.hero-content h2 {
+    color: var(--gold-light);
+    font-size: 38px;
+    margin-bottom: 25px;
+}
+
+.hero-content button {
+    background-color: var(--accent);
+    color: var(--primary);
+    border: none;
+    padding: 12px 25px;
+    margin: 8px;
+    border-radius: 5px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.hero-content button:hover {
+    background-color: var(--gold-light);
+    transform: translateY(-3px);
+}
+
+
+/* 5. Common Section Styling */
+section {
+    padding: 60px 7%;
+    scroll-margin-top: 140px;
+}
+
+section > h2 {
+    text-align: center;
+    color: var(--accent);
+    font-size: 30px;
+    margin-bottom: 35px;
+}
+
+
+/* 6. About IPL Section */
+#about {
+    background-color: var(--secondary);
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.popular-teams,
+.major-venues {
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 25px;
+}
+
+.about-content h3 {
+    color: var(--accent);
+    margin-bottom: 15px;
+}
+
+.about-content ul {
+    padding-left: 22px;
+    line-height: 2;
+}
+
+.about-content li {
+    color: var(--text);
+}
+
+
+/* 7. Match Schedule */
+#matches {
+    background-color: var(--primary);
+}
+
+.team-filter {
+    margin-bottom: 25px;
+}
+
+.team-filter label {
+    color: var(--accent);
+    margin-right: 10px;
+}
+
+.team-filter select {
+    padding: 10px;
+    background-color: var(--secondary);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 5px;
+    font-family: inherit;
+}
+
+
+/* Match Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    margin-top: 15px;
+}
+
+th {
+    background-color: var(--accent);
+    color: var(--primary);
+    padding: 15px 10px;
+}
+
+td {
+    background-color: var(--secondary);
+    color: var(--accent);
+    padding: 15px 10px;
+}
+
+tbody tr:hover td {
+    background-color: #252525;
+}
+
+table button {
+    background-color: var(--accent);
+    color: var(--primary);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+#matches > p {
+    color: #AAAAAA;
+    margin-top: 15px;
+}
+
+
+/* 8. Booking Section */
+#booking {
+    background-color: var(--secondary);
+}
+
+.booking-container {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.booking-form,
+.booking-summary {
+    background-color: var(--primary);
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.booking-form h3,
+.booking-summary h3 {
+    color: var(--accent);
+    margin-bottom: 20px;
+}
+
+.booking-form form label {
+    display: block;
+    color: var(--accent);
+    margin-bottom: 7px;
+}
+
+.booking-form input,
+.booking-form select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    background-color: var(--secondary);
+    color: var(--text);
+    border: 1px solid var(--accent);
+    border-radius: 5px;
+    font-family: inherit;
+}
+
+.booking-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--accent);
+    color: var(--primary);
+    border: none;
+    border-radius: 5px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.booking-form button:hover {
+    background-color: var(--gold-light);
+}
+
+.booking-summary {
+    border: 1px solid var(--accent);
+}
+
+.booking-summary p {
+    color: var(--text);
+    margin-bottom: 18px;
+}
+
+.booking-summary span {
+    color: var(--accent);
+}
+
+.booking-summary hr {
+    border: 1px solid var(--accent);
+    margin: 20px 0;
+}
+
+
+/* 9. My Bookings Section */
+#my-bookings {
+    background-color: var(--primary);
+}
+
+
+/* 10. Guidelines Section */
+#guidelines {
+    background-color: var(--secondary);
+}
+
+.guidelines-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.guideline-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.guideline-icon {
+    font-size: 30px;
+    color: var(--accent);
+}
+
+.guideline-card h3 {
+    color: var(--accent);
+    font-size: 17px;
+    margin-bottom: 4px;
+}
+
+.guideline-card p {
+    color: #DDDDDD;
+    font-size: 13px;
+}
+
+
+/* 11. Footer */
+footer {
+    background-color: var(--primary);
+    color: var(--accent);
+    text-align: center;
+    padding: 25px;
+    border-top: 1px solid var(--accent);
+}
+
+
+/* 12. Responsive Design */
+@media (max-width: 768px) {
+
+    nav ul {
+        gap: 15px;
+    }
+
+    nav ul li a {
+        font-size: 13px;
+    }
+
+    .hero {
+        height: 350px;
+    }
+
+    .hero-content h2 {
+        font-size: 25px;
+    }
+
+    .about-content {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-container {
+        grid-template-columns: 1fr;
+    }
+
+    #matches {
+        overflow-x: auto;
+    }
+
+    #matches table {
+        min-width: 850px;
+    }
+
+    section {
+        padding: 40px 5%;
+    }
+
+}
+
