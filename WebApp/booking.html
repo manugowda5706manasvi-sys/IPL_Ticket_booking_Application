@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL 2026 - Book Tickets</title>
+
+    <link rel="stylesheet" href="../CSS/style.css">
+
+    <style>
+        .booking-page {
+            max-width: 750px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #171717;
+            color: white;
+            border: 1px solid #b89645;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(184,150,69,0.15);
+        }
+
+        .booking-page h1 {
+            text-align: center;
+            color: #d4af5a;
+        }
+
+        .booking-description {
+            text-align: center;
+            color: #ccc;
+            margin-bottom: 25px;
+        }
+
+        .booking-page .form-group {
+            margin-bottom: 20px;
+        }
+
+        .booking-page .form-group label {
+            display: block;
+            color: #d4af5a;
+            margin-bottom: 8px;
+        }
+
+        .booking-page .required {
+            color: #ff5555;
+        }
+
+        .booking-page input:not([type="checkbox"]),
+        .booking-page select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            background: #252525;
+            color: white;
+            border: 1px solid #777;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        .booking-page input:focus,
+        .booking-page select:focus {
+            outline: none;
+            border-color: #d4af5a;
+        }
+
+        .booking-page .tooltip {
+            display: inline-block;
+            position: relative;
+            color: #ff7777;
+            cursor: help;
+        }
+
+        .booking-page .tooltip-text {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            z-index: 5;
+            width: 190px;
+            bottom: 130%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px;
+            background: #333;
+            color: white;
+            border: 1px solid #d4af5a;
+            border-radius: 5px;
+            font-size: 12px;
+            text-align: center;
+            transition: opacity 0.2s;
+        }
+
+        .booking-page .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .booking-page .preferences {
+            margin: 25px 0;
+        }
+
+        .booking-page .preferences h3 {
+            color: #d4af5a;
+        }
+
+        .booking-page .preferences label {
+            display: block;
+            color: #ddd;
+            margin: 12px 0;
+        }
+
+        .booking-page .preferences input {
+            accent-color: #d4af5a;
+        }
+
+        .booking-page .required-note {
+            color: #ccc;
+            font-size: 13px;
+        }
+
+        .booking-page .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .booking-page button {
+            flex: 1;
+            padding: 13px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .booking-page .submit-btn {
+            background: #d4af5a;
+            color: #000;
+            border: 1px solid #d4af5a;
+        }
+
+        .booking-page .submit-btn:hover {
+            background: #b89645;
+        }
+
+        .booking-page .reset-btn {
+            background: transparent;
+            color: #d4af5a;
+            border: 1px solid #d4af5a;
+        }
+
+        .booking-page .reset-btn:hover {
+            background: #d4af5a;
+            color: #000;
+        }
+
+        .booking-page .home-link {
+            display: block;
+            text-align: center;
+            color: #d4af5a;
+            margin-top: 25px;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .booking-page {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .booking-page .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+
+    <script src="../JS/app.js" defer></script>
+</head>
+
+<body>
+
+    <main class="booking-page">
+
+        <h1>Book Your IPL 2026 Tickets</h1>
+
+        <p class="booking-description">
+            Experience The Stadium Energy Live!
+        </p>
+
+        <p class="required-note">
+            <span class="required">*</span> Required fields
+        </p>
+
+        <form id="ticket-booking-form">
+
+            <div class="form-group">
+                <label for="name">
+                    Full Name <span class="required">*</span>
+                    <span class="tooltip">ⓘ
+                        <span class="tooltip-text">
+                            Enter 3 to 50 letters. Numbers are not allowed.
+                        </span>
+                    </span>
+                </label>
+                <input type="text" id="name" name="name"
+                    placeholder="Enter your full name"
+                    pattern="[A-Za-z][A-Za-z ]{2,49}"
+                    minlength="3" maxlength="50"
+                    title="Enter 3 to 50 letters and spaces only."
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">
+                    Email Address <span class="required">*</span>
+                    <span class="tooltip">ⓘ
+                        <span class="tooltip-text">
+                            Enter a valid email address.
+                        </span>
+                    </span>
+                </label>
+                <input type="email" id="email" name="email"
+                    placeholder="example@gmail.com"
+                    maxlength="100"
+                    title="Please enter a valid email address."
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">
+                    Phone Number <span class="required">*</span>
+                    <span class="tooltip">ⓘ
+                        <span class="tooltip-text">
+                            Enter exactly 10 digits, without letters or symbols.
+                        </span>
+                    </span>
+                </label>
+                <input type="tel" id="phone" name="phone"
+                    placeholder="Enter 10-digit mobile number"
+                    pattern="[6-9][0-9]{9}"
+                    minlength="10" maxlength="10"
+                    title="Enter a 10-digit Indian mobile number starting with 6, 7, 8 or 9."
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="match">
+                    Select Match <span class="required">*</span>
+                    <span class="tooltip">ⓘ
+                        <span class="tooltip-text">
+                            Select the match you want to watch.
+                        </span>
+                    </span>
+                </label>
+                <select id="match" name="match" required>
+                    <option value="">-- Select a Match --</option>
+                    <option value="RCB vs CSK">RCB vs CSK</option>
+                    <option value="MI vs KKR">MI vs KKR</option>
+                    <option value="CSK vs SRH">CSK vs SRH</option>
+                    <option value="RCB vs MI">RCB vs MI</option>
+                    <option value="KKR vs GT">KKR vs GT</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="stand">
+                    Stand Category <span class="required">*</span>
+                    <span class="tooltip">ⓘ
+                        <span class="tooltip-text">
+                            Choose your preferred seating category.
+                        </span>
+                    </span>
+                </label>
+                <select id="stand" name="stand" required>
+                    <option value="">-- Select Stand --</option>
+                    <option value="General Stand">General Stand</option>
+                    <option value="Premium Stand">Premium Stand</option>
+                    <option value="VIP Stand">VIP Stand</option>
+                    <option value="Corporate Box">Corporate Box</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="tickets">
+                    Number of Tickets <span class="required">*</span>
+                    <span class="tooltip">ⓘ
+                        <span class="tooltip-text">
+                            Select between 1 and 10 tickets.
+                        </span>
+                    </span>
+                </label>
+                <input type="number" id="tickets" name="tickets"
+                    min="1" max="10"
+                    placeholder="Enter number of tickets"
+                    title="You can book between 1 and 10 tickets."
+                    required>
+            </div>
+
+            <div class="preferences">
+                <h3>Additional Preferences</h3>
+
+                <label>
+                    <input type="checkbox" name="preferences" value="SMS">
+                    SMS Ticket Updates
+                </label>
+
+                <label>
+                    <input type="checkbox" name="preferences" value="Email">
+                    Email Ticket Updates
+                </label>
+
+                <label>
+                    <input type="checkbox" name="preferences" value="Reminders">
+                    Match Reminders
+                </label>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="submit-btn">
+                    Submit Booking
+                </button>
+
+                <button type="reset" class="reset-btn">
+                    Reset Form
+                </button>
+            </div>
+
+        </form>
+
+        <a href="index.html" class="home-link">
+            ← Back to Home
+        </a>
+
+    </main>
+
+</body>
+</html>

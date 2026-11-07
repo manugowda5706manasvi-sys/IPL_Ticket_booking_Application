@@ -249,82 +249,77 @@ table button {
 }
 
 
-/* 8. Booking Section */
+/* 8. Booking Section - Premium Luxury Design D */
+
 #booking {
-    background-color: var(--secondary);
-}
-
-.booking-container {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: 30px;
-    align-items: start;
-}
-
-.booking-form,
-.booking-summary {
     background-color: var(--primary);
-    padding: 30px;
-    border-radius: 10px;
+    padding: 65px 7%;
+    text-align: center;
 }
 
-.booking-form h3,
-.booking-summary h3 {
-    color: var(--accent);
-    margin-bottom: 20px;
-}
-
-.booking-form form label {
-    display: block;
-    color: var(--accent);
-    margin-bottom: 7px;
-}
-
-.booking-form input,
-.booking-form select {
+#booking .booking-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    padding: 12px;
-    margin-bottom: 18px;
-    background-color: var(--secondary);
-    color: var(--text);
+}
+
+#booking .booking-form {
+    width: 100%;
+    max-width: 650px;
+    padding: 45px 30px;
+    margin: auto;
+    background-color: #080808;
     border: 1px solid var(--accent);
-    border-radius: 5px;
-    font-family: inherit;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.10);
+    text-align: center;
 }
 
-.booking-form button {
-    width: 100%;
-    padding: 12px;
+#booking .booking-trophy {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+#booking .booking-form h2 {
+    color: var(--accent);
+    font-size: 34px;
+    margin-bottom: 15px;
+}
+
+#booking .booking-form h3 {
+    color: var(--text);
+    font-size: 25px;
+    margin-bottom: 12px;
+}
+
+#booking .booking-form p {
+    color: #AAAAAA;
+    font-size: 16px;
+    margin-bottom: 28px;
+}
+
+#booking .book-now-link {
+    text-decoration: none;
+}
+
+#booking .booking-form button {
+    width: auto;
     background-color: var(--accent);
     color: var(--primary);
-    border: none;
-    border-radius: 5px;
-    font-family: inherit;
+    padding: 14px 35px;
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
 }
 
-.booking-form button:hover {
-    background-color: var(--gold-light);
-}
-
-.booking-summary {
-    border: 1px solid var(--accent);
-}
-
-.booking-summary p {
-    color: var(--text);
-    margin-bottom: 18px;
-}
-
-.booking-summary span {
+#booking .booking-form button:hover {
+    background-color: transparent;
     color: var(--accent);
-}
-
-.booking-summary hr {
-    border: 1px solid var(--accent);
-    margin: 20px 0;
+    transform: translateY(-3px);
 }
 
 
@@ -401,10 +396,6 @@ footer {
         grid-template-columns: 1fr;
     }
 
-    .booking-container {
-        grid-template-columns: 1fr;
-    }
-
     #matches {
         overflow-x: auto;
     }
@@ -417,5 +408,19 @@ footer {
         padding: 40px 5%;
     }
 
-}
+    #booking {
+        padding: 45px 5%;
+    }
 
+    #booking .booking-form {
+        padding: 35px 20px;
+    }
+
+    #booking .booking-form h2 {
+        font-size: 28px;
+    }
+
+    #booking .booking-form h3 {
+        font-size: 21px;
+    }
+}
