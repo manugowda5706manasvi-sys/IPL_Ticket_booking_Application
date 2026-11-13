@@ -34,7 +34,6 @@ function showToast(message) {
 
 
 
-
 function getBookings() {
     return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 }
@@ -54,7 +53,6 @@ document.addEventListener("click", function (event) {
     }
 
 });
-
 
 
 
@@ -79,7 +77,6 @@ document.querySelectorAll('a[href^="#"]').forEach(function (link) {
 
 
 
-
 const bookingForm = document.getElementById("ticket-booking-form");
 
 if (bookingForm && sessionStorage.getItem("showBookingToast") === "yes") {
@@ -99,14 +96,12 @@ if (bookingForm && sessionStorage.getItem("showBookingToast") === "yes") {
 
 
 
-
 if (bookingForm) {
 
     bookingForm.addEventListener("submit", function (event) {
 
         event.preventDefault();
 
-      
         if (!bookingForm.checkValidity()) {
             bookingForm.reportValidity();
             return;
@@ -150,7 +145,6 @@ if (bookingForm) {
 
         bookingForm.reset();
 
-        
         setTimeout(function () {
             window.location.href = "index.html#my-bookings";
         }, 1500);
@@ -158,7 +152,6 @@ if (bookingForm) {
     });
 
 }
-
 
 
 
@@ -172,7 +165,6 @@ if (bookingsTable) {
 
         bookingsTable.replaceChildren();
 
-        
         if (bookings.length === 0) {
 
             const row = document.createElement("tr");
@@ -193,7 +185,6 @@ if (bookingsTable) {
         }
 
 
-        
         bookings.forEach(booking => {
 
             const row = document.createElement("tr");
@@ -201,13 +192,9 @@ if (bookingsTable) {
             const values = [
 
                 booking.name,
-
                 booking.match,
-
                 booking.stand,
-
                 booking.tickets,
-
                 booking.bookingDate,
 
                 booking.preferences && booking.preferences.length
@@ -223,7 +210,7 @@ if (bookingsTable) {
 
                 if (index === 5) {
 
-                    // Preferences and tiny Delete button in same cell
+                   
                     cell.classList.add("preferences-cell");
 
                     const preferenceText = document.createElement("span");
