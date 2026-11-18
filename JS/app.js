@@ -1,7 +1,8 @@
+
 const STORAGE_KEY = "ipl2026Bookings";
 
 
-
+// TOAST NOTIFICATION FUNCTION
 
 function showToast(message) {
 
@@ -33,6 +34,7 @@ function showToast(message) {
 }
 
 
+// GET AND SAVE BOOKINGS
 
 function getBookings() {
     return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -43,6 +45,7 @@ function saveBookings(bookings) {
 }
 
 
+// BOOKING PAGE LINK NOTIFICATION
 
 document.addEventListener("click", function (event) {
 
@@ -55,6 +58,7 @@ document.addEventListener("click", function (event) {
 });
 
 
+// SMOOTH SCROLLING
 
 document.querySelectorAll('a[href^="#"]').forEach(function (link) {
 
@@ -76,6 +80,7 @@ document.querySelectorAll('a[href^="#"]').forEach(function (link) {
 });
 
 
+// BOOKING FORM
 
 const bookingForm = document.getElementById("ticket-booking-form");
 
@@ -95,6 +100,7 @@ if (bookingForm && sessionStorage.getItem("showBookingToast") === "yes") {
 }
 
 
+// HANDLE BOOKING SUBMISSION AND RESET
 
 if (bookingForm) {
 
@@ -151,9 +157,119 @@ if (bookingForm) {
 
     });
 
+
+    // RESET BOOKING SUMMARY
+
+    bookingForm.addEventListener("reset", function () {
+
+        setTimeout(function () {
+            updateBookingSummary();
+        }, 0);
+
+    });
+
 }
 
 
+// ACTIVITY 7: LIVE BOOKING SUMMARY
+
+const matchSelect = document.getElementById("match");
+
+const standSelect = document.getElementById("stand");
+
+const ticketQuantity = document.getElementById("tickets");
+
+
+// SAMPLE TICKET PRICES
+
+const ticketPrices = {
+
+    "General Stand": 800,
+
+    "Premium Stand": 2000,
+
+    "VIP Stand": 5000,
+
+    "Corporate Box": 8000
+
+};
+
+
+// BOOKING SUMMARY ELEMENTS
+
+const summaryMatch = document.getElementById("summary-match");
+
+const summaryStand = document.getElementById("summary-stand");
+
+const summaryPrice = document.getElementById("summary-price");
+
+const summaryQuantity = document.getElementById("summary-quantity");
+
+const summaryTotal = document.getElementById("summary-total");
+
+
+// UPDATE BOOKING SUMMARY
+
+function updateBookingSummary() {
+
+    if (
+        !matchSelect ||
+        !standSelect ||
+        !ticketQuantity ||
+        !summaryMatch ||
+        !summaryStand ||
+        !summaryPrice ||
+        !summaryQuantity ||
+        !summaryTotal
+    ) {
+        return;
+    }
+
+    const selectedMatch = matchSelect.value;
+
+    const selectedStand = standSelect.value;
+
+    const quantity = Number(ticketQuantity.value) || 0;
+
+    const price = ticketPrices[selectedStand] || 0;
+
+    const total = price * quantity;
+
+
+    // DISPLAY SELECTED DETAILS
+
+    summaryMatch.textContent = selectedMatch || "Not selected";
+
+    summaryStand.textContent = selectedStand || "Not selected";
+
+    summaryPrice.textContent = "₹" + price.toLocaleString("en-IN");
+
+    summaryQuantity.textContent = quantity;
+
+    summaryTotal.textContent = "₹" + total.toLocaleString("en-IN");
+
+}
+
+
+// LISTEN FOR FORM CHANGES
+
+if (matchSelect && standSelect && ticketQuantity) {
+
+    matchSelect.addEventListener("change", updateBookingSummary);
+
+    standSelect.addEventListener("change", updateBookingSummary);
+
+    ticketQuantity.addEventListener("input", updateBookingSummary);
+
+
+    // DISPLAY INITIAL SUMMARY
+
+    updateBookingSummary();
+
+}
+
+
+// MAIN PAGE: DISPLAY SAVED BOOKINGS
 
 const bookingsTable = document.getElementById("bookings-body");
 
@@ -192,9 +308,13 @@ if (bookingsTable) {
             const values = [
 
                 booking.name,
+
                 booking.match,
+
                 booking.stand,
+
                 booking.tickets,
+
                 booking.bookingDate,
 
                 booking.preferences && booking.preferences.length
@@ -210,7 +330,6 @@ if (bookingsTable) {
 
                 if (index === 5) {
 
-                   
                     cell.classList.add("preferences-cell");
 
                     const preferenceText = document.createElement("span");
@@ -228,7 +347,8 @@ if (bookingsTable) {
                     deleteButton.title = "Delete this booking";
 
 
-                    
+                    // DELETE INDIVIDUAL BOOKING
+
                     deleteButton.addEventListener("click", function () {
 
                         const updatedBookings = getBookings().filter(
