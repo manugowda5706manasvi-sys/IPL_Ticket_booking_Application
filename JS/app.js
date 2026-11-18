@@ -2,7 +2,7 @@
 const STORAGE_KEY = "ipl2026Bookings";
 
 
-// TOAST NOTIFICATION FUNCTION
+
 
 function showToast(message) {
 
@@ -30,49 +30,59 @@ function showToast(message) {
             toast.remove();
         }, 300);
 
-    }, 2500);
+    }, 3000);
 }
 
 
-// GET AND SAVE BOOKINGS
+/* =========================================
+   2. Local Storage Functions
+========================================= */
 
 function getBookings() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-}
 
-function saveBookings(bookings) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
-}
+    const savedBookings = localStorage.getItem(STORAGE_KEY);
 
-
-// BOOKING PAGE LINK NOTIFICATION
-
-document.addEventListener("click", function (event) {
-
-    const bookLink = event.target.closest('a[href*="booking.html"]');
-
-    if (bookLink) {
-        sessionStorage.setItem("showBookingToast", "yes");
+    if (!savedBookings) {
+        return [];
     }
 
-});
+    try {
+        return JSON.parse(savedBookings);
+    } catch (error) {
+        return [];
+    }
+}
 
 
-// SMOOTH SCROLLING
+function saveBookings(bookings) {
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(bookings)
+    );
+}
+
+
+/* =========================================
+   3. Smooth Scrolling
+========================================= */
 
 document.querySelectorAll('a[href^="#"]').forEach(function (link) {
 
     link.addEventListener("click", function (event) {
 
-        const target = document.querySelector(link.getAttribute("href"));
+        const targetId = link.getAttribute("href");
 
-        if (target) {
+        const targetSection = document.querySelector(targetId);
+
+        if (targetSection) {
+
             event.preventDefault();
 
-            target.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
+            targetSection.scrollIntoView({
+                behavior: "smooth"
             });
+
         }
 
     });
@@ -80,27 +90,50 @@ document.querySelectorAll('a[href^="#"]').forEach(function (link) {
 });
 
 
-// BOOKING FORM
+/* =========================================
+   4. Booking Page Link Toast
+========================================= */
 
-const bookingForm = document.getElementById("ticket-booking-form");
+document.querySelectorAll('a[href*="booking.html"]').forEach(function (link) {
 
-if (bookingForm && sessionStorage.getItem("showBookingToast") === "yes") {
+    link.addEventListener("click", function () {
+
+        sessionStorage.setItem("showBookingToast", "true");
+
+    });
+
+});
+
+
+if (sessionStorage.getItem("showBookingToast") === "true") {
 
     sessionStorage.removeItem("showBookingToast");
 
-    showToast("Opening your IPL ticket booking form!");
+    showToast("You can now book your IPL tickets!");
 
     setTimeout(function () {
-        bookingForm.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-    }, 300);
+
+        const bookingForm = document.getElementById("ticket-booking-form");
+
+        if (bookingForm) {
+
+            bookingForm.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+
+    }, 500);
 
 }
 
 
-// HANDLE BOOKING SUBMISSION AND RESET
+/* =========================================
+   5. Booking Form Submission
+========================================= */
+
+const bookingForm = document.getElementById("ticket-booking-form");
 
 if (bookingForm) {
 
@@ -109,37 +142,59 @@ if (bookingForm) {
         event.preventDefault();
 
         if (!bookingForm.checkValidity()) {
+
             bookingForm.reportValidity();
+
+            showToast("Please complete all required fields.");
+
             return;
         }
 
-        const preferences = Array.from(
-            bookingForm.querySelectorAll(
-                'input[name="preferences"]:checked'
-            )
-        ).map(input => input.value);
+
+        const name = document.getElementById("name").value.trim();
+
+        const email = document.getElementById("email").value.trim();
+
+        const phone = document.getElementById("phone").value.trim();
+
+        const match = document.getElementById("match").value;
+
+        const stand = document.getElementById("stand").value;
+
+        const tickets = Number(document.getElementById("tickets").value);
+
+
+        const selectedPreferences = [];
+
+        document.querySelectorAll('input[name="preferences"]:checked').forEach(function (checkbox) {
+
+            selectedPreferences.push(checkbox.value);
+
+        });
+
 
         const booking = {
 
             id: Date.now(),
 
-            name: document.getElementById("name").value.trim(),
+            name: name,
 
-            email: document.getElementById("email").value.trim(),
+            email: email,
 
-            phone: document.getElementById("phone").value.trim(),
+            phone: phone,
 
-            match: document.getElementById("match").value,
+            match: match,
 
-            stand: document.getElementById("stand").value,
+            stand: stand,
 
-            tickets: document.getElementById("tickets").value,
+            tickets: tickets,
 
-            preferences: preferences,
+            preferences: selectedPreferences,
 
-            bookingDate: new Date().toLocaleDateString()
+            bookingDate: new Date().toLocaleDateString("en-IN")
 
         };
+
 
         const bookings = getBookings();
 
@@ -147,23 +202,31 @@ if (bookingForm) {
 
         saveBookings(bookings);
 
+
         showToast("Your IPL ticket booking was successful!");
+
 
         bookingForm.reset();
 
+        updateBookingSummary();
+
+
         setTimeout(function () {
+
             window.location.href = "index.html#my-bookings";
-        }, 1500);
+
+        }, 1200);
 
     });
 
 
-    // RESET BOOKING SUMMARY
-
+    /* Reset Booking Summary */
     bookingForm.addEventListener("reset", function () {
 
         setTimeout(function () {
+
             updateBookingSummary();
+
         }, 0);
 
     });
@@ -171,16 +234,9 @@ if (bookingForm) {
 }
 
 
-// ACTIVITY 7: LIVE BOOKING SUMMARY
-
-const matchSelect = document.getElementById("match");
-
-const standSelect = document.getElementById("stand");
-
-const ticketQuantity = document.getElementById("tickets");
-
-
-// SAMPLE TICKET PRICES
+/* =========================================
+   6. Activity 7 - Live Booking Summary
+========================================= */
 
 const ticketPrices = {
 
@@ -195,83 +251,101 @@ const ticketPrices = {
 };
 
 
-// BOOKING SUMMARY ELEMENTS
-
-const summaryMatch = document.getElementById("summary-match");
-
-const summaryStand = document.getElementById("summary-stand");
-
-const summaryPrice = document.getElementById("summary-price");
-
-const summaryQuantity = document.getElementById("summary-quantity");
-
-const summaryTotal = document.getElementById("summary-total");
-
-
-// UPDATE BOOKING SUMMARY
-
 function updateBookingSummary() {
 
-    if (
-        !matchSelect ||
-        !standSelect ||
-        !ticketQuantity ||
-        !summaryMatch ||
-        !summaryStand ||
-        !summaryPrice ||
-        !summaryQuantity ||
-        !summaryTotal
-    ) {
+    const matchInput = document.getElementById("match");
+
+    const standInput = document.getElementById("stand");
+
+    const ticketsInput = document.getElementById("tickets");
+
+
+    if (!matchInput || !standInput || !ticketsInput) {
         return;
     }
 
-    const selectedMatch = matchSelect.value;
 
-    const selectedStand = standSelect.value;
+    const selectedMatch = matchInput.options[matchInput.selectedIndex];
 
-    const quantity = Number(ticketQuantity.value) || 0;
+    const matchName = selectedMatch ? selectedMatch.text : "Not selected";
 
-    const price = ticketPrices[selectedStand] || 0;
+    const selectedStand = standInput.value || "Not selected";
 
-    const total = price * quantity;
+    const quantity = Number(ticketsInput.value) || 0;
 
 
-    // DISPLAY SELECTED DETAILS
+    let price = ticketPrices[selectedStand] || 0;
 
-    summaryMatch.textContent = selectedMatch || "Not selected";
+    let total = price * quantity;
 
-    summaryStand.textContent = selectedStand || "Not selected";
 
-    summaryPrice.textContent = "₹" + price.toLocaleString("en-IN");
+    const summaryMatch = document.getElementById("summary-match");
 
-    summaryQuantity.textContent = quantity;
+    const summaryStand = document.getElementById("summary-stand");
 
-    summaryTotal.textContent = "₹" + total.toLocaleString("en-IN");
+    const summaryPrice = document.getElementById("summary-price");
+
+    const summaryQuantity = document.getElementById("summary-quantity");
+
+    const summaryTotal = document.getElementById("summary-total");
+
+
+    if (summaryMatch) {
+        summaryMatch.textContent = matchName;
+    }
+
+    if (summaryStand) {
+        summaryStand.textContent = selectedStand;
+    }
+
+    if (summaryPrice) {
+        summaryPrice.textContent = "₹" + price;
+    }
+
+    if (summaryQuantity) {
+        summaryQuantity.textContent = quantity;
+    }
+
+    if (summaryTotal) {
+        summaryTotal.textContent = "₹" + total;
+    }
 
 }
 
 
-// LISTEN FOR FORM CHANGES
+/* Live Summary Event Listeners */
 
-if (matchSelect && standSelect && ticketQuantity) {
+const matchInput = document.getElementById("match");
 
-    matchSelect.addEventListener("change", updateBookingSummary);
+const standInput = document.getElementById("stand");
 
-    standSelect.addEventListener("change", updateBookingSummary);
-
-    ticketQuantity.addEventListener("input", updateBookingSummary);
+const ticketsInput = document.getElementById("tickets");
 
 
-    // DISPLAY INITIAL SUMMARY
+if (matchInput) {
+    matchInput.addEventListener("change", updateBookingSummary);
+}
 
-    updateBookingSummary();
+if (standInput) {
+    standInput.addEventListener("change", updateBookingSummary);
+}
 
+if (ticketsInput) {
+    ticketsInput.addEventListener("input", updateBookingSummary);
 }
 
 
-// MAIN PAGE: DISPLAY SAVED BOOKINGS
+/* Display Summary When Booking Page Loads */
+
+updateBookingSummary();
+
+
+/* =========================================
+   7. Display Saved Bookings
+========================================= */
 
 const bookingsTable = document.getElementById("bookings-body");
+
 
 if (bookingsTable) {
 
@@ -279,104 +353,108 @@ if (bookingsTable) {
 
         const bookings = getBookings();
 
-        bookingsTable.replaceChildren();
+        bookingsTable.innerHTML = "";
+
 
         if (bookings.length === 0) {
 
-            const row = document.createElement("tr");
+            const emptyRow = document.createElement("tr");
 
-            const cell = document.createElement("td");
+            const emptyCell = document.createElement("td");
 
-            cell.colSpan = 6;
+            emptyCell.colSpan = 6;
 
-            cell.textContent = "No bookings yet. Book your IPL tickets now!";
+            emptyCell.textContent = "No bookings available yet.";
 
-            cell.style.textAlign = "center";
+            emptyCell.className = "empty-bookings";
 
-            row.appendChild(cell);
+            emptyRow.appendChild(emptyCell);
 
-            bookingsTable.appendChild(row);
+            bookingsTable.appendChild(emptyRow);
 
             return;
+
         }
 
 
-        bookings.forEach(booking => {
+        bookings.forEach(function (booking) {
 
             const row = document.createElement("tr");
 
-            const values = [
 
-                booking.name,
+            const nameCell = document.createElement("td");
 
-                booking.match,
+            nameCell.textContent = booking.name;
 
-                booking.stand,
 
-                booking.tickets,
+            const matchCell = document.createElement("td");
 
-                booking.bookingDate,
+            matchCell.textContent = booking.match;
 
-                booking.preferences && booking.preferences.length
+
+            const standCell = document.createElement("td");
+
+            standCell.textContent = booking.stand;
+
+
+            const ticketsCell = document.createElement("td");
+
+            ticketsCell.textContent = booking.tickets;
+
+
+            const dateCell = document.createElement("td");
+
+            dateCell.textContent = booking.bookingDate || "Not available";
+
+
+            const preferencesCell = document.createElement("td");
+
+            preferencesCell.className = "preferences-cell";
+
+
+            const preferencesText = document.createElement("span");
+
+            preferencesText.textContent =
+                booking.preferences && booking.preferences.length > 0
                     ? booking.preferences.join(", ")
-                    : "None"
-
-            ];
+                    : "None";
 
 
-            values.forEach((value, index) => {
+            const deleteButton = document.createElement("button");
 
-                const cell = document.createElement("td");
+            deleteButton.type = "button";
 
-                if (index === 5) {
+            deleteButton.textContent = "delete";
 
-                    cell.classList.add("preferences-cell");
+            deleteButton.className = "delete-booking-btn";
 
-                    const preferenceText = document.createElement("span");
-
-                    preferenceText.textContent = value;
-
-                    const deleteButton = document.createElement("button");
-
-                    deleteButton.type = "button";
-
-                    deleteButton.textContent = "Delete";
-
-                    deleteButton.className = "delete-booking-btn";
-
-                    deleteButton.title = "Delete this booking";
+            deleteButton.setAttribute("aria-label", "Delete booking");
 
 
-                    // DELETE INDIVIDUAL BOOKING
+            deleteButton.addEventListener("click", function () {
 
-                    deleteButton.addEventListener("click", function () {
-
-                        const updatedBookings = getBookings().filter(
-                            item => item.id !== booking.id
-                        );
-
-                        saveBookings(updatedBookings);
-
-                        displayBookings();
-
-                        showToast("Booking deleted successfully!");
-
-                    });
-
-
-                    cell.appendChild(preferenceText);
-
-                    cell.appendChild(deleteButton);
-
-                } else {
-
-                    cell.textContent = value;
-
-                }
-
-                row.appendChild(cell);
+                deleteBooking(booking.id);
 
             });
+
+
+            preferencesCell.appendChild(preferencesText);
+
+            preferencesCell.appendChild(deleteButton);
+
+
+            row.appendChild(nameCell);
+
+            row.appendChild(matchCell);
+
+            row.appendChild(standCell);
+
+            row.appendChild(ticketsCell);
+
+            row.appendChild(dateCell);
+
+            row.appendChild(preferencesCell);
+
 
             bookingsTable.appendChild(row);
 
@@ -384,6 +462,150 @@ if (bookingsTable) {
 
     }
 
+
+    /* Delete Booking */
+    function deleteBooking(bookingId) {
+
+        const bookings = getBookings();
+
+        const updatedBookings = bookings.filter(function (booking) {
+
+            return booking.id !== bookingId;
+
+        });
+
+
+        saveBookings(updatedBookings);
+
+        displayBookings();
+
+        showToast("Booking deleted successfully.");
+
+    }
+
+
     displayBookings();
+
+}
+
+
+/* =========================================
+   8. Activity 8 - Mobile Hamburger Menu
+========================================= */
+
+const menuToggle = document.getElementById("menu-toggle");
+
+const navLinks = document.getElementById("nav-links");
+
+
+if (menuToggle && navLinks) {
+
+    menuToggle.addEventListener("click", function () {
+
+        navLinks.classList.toggle("active");
+
+
+        const isOpen = navLinks.classList.contains("active");
+
+
+        menuToggle.textContent = isOpen ? "✕" : "☰";
+
+        menuToggle.setAttribute("aria-expanded", isOpen);
+
+    });
+
+
+    /* Close Menu After Clicking a Link */
+    navLinks.querySelectorAll("a").forEach(function (link) {
+
+        link.addEventListener("click", function () {
+
+            navLinks.classList.remove("active");
+
+            menuToggle.textContent = "☰";
+
+            menuToggle.setAttribute("aria-expanded", "false");
+
+        });
+
+    });
+
+}
+
+
+/* =========================================
+   9. Activity 8 - Team Filter
+========================================= */
+
+const teamFilter = document.getElementById("team-filter");
+
+const matchCards = document.querySelectorAll(".match-card");
+
+
+if (teamFilter) {
+
+    teamFilter.addEventListener("change", function () {
+
+        const selectedTeam = teamFilter.value;
+
+
+        matchCards.forEach(function (card) {
+
+            const teams = card.dataset.teams.split(" ");
+
+
+            if (selectedTeam === "all" || teams.includes(selectedTeam)) {
+
+                card.style.display = "";
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+    });
+
+}
+
+
+/* =========================================
+   10. Activity 8 - Grid and List View
+========================================= */
+
+const matchGrid = document.getElementById("match-grid");
+
+const gridViewButton = document.getElementById("grid-view");
+
+const listViewButton = document.getElementById("list-view");
+
+
+if (matchGrid && gridViewButton && listViewButton) {
+
+
+    /* Grid View Button */
+    gridViewButton.addEventListener("click", function () {
+
+        matchGrid.classList.remove("list-view");
+
+        gridViewButton.classList.add("active");
+
+        listViewButton.classList.remove("active");
+
+    });
+
+
+    /* List View Button */
+    listViewButton.addEventListener("click", function () {
+
+        matchGrid.classList.add("list-view");
+
+        listViewButton.classList.add("active");
+
+        gridViewButton.classList.remove("active");
+
+    });
 
 }
